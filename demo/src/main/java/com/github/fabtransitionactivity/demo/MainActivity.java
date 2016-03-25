@@ -4,10 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -20,9 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -55,10 +50,13 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
     FloatingActionButton mFab3;
     @Bind(R.id.fab4)
     FloatingActionButton mFab4;
+    @Bind(R.id.anchor)
+    ImageView mAnchor;
 
     ArrayList<Mail> mailList = new ArrayList<>();
 
-    private static final int REQUEST_CODE = 1;
+
+    private static final int FAB_ANIMATION_ENDED_REQUEST_CODE = 1;
     private int mAnimationDuration;
     private float mFabSize = 24;
 
@@ -69,8 +67,8 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         ButterKnife.bind(this);
         setUpToolbarWithTitle(getString(R.string.INBOX), false);
 
-//        mSheetLayout.setFab(mFab);
-//        mSheetLayout.setFabAnimationEndListener(this);
+        mSheetLayout.setFab(mFab);
+        mSheetLayout.setFabAnimationEndListener(this);
 
 //        fillMailList();
 //        listMails.setAdapter(new MailAdapter());
@@ -83,14 +81,10 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
 
     @OnClick(R.id.fab)
     void onFabClick() {
-        Log.i(TAG, "Running FAB click");
-        if (mFab.getVisibility() != View.VISIBLE) {
-            Log.i(TAG, "Running hide animations");
-            onClickClose();
-            return;
-        }
-        mFab.clearAnimation();
-        mFab1.clearAnimation();
+        mFab1.setVisibility(View.VISIBLE);
+        mFab2.setVisibility(View.VISIBLE);
+        mFab3.setVisibility(View.VISIBLE);
+        mFab4.setVisibility(View.VISIBLE);
 
         float dx = ViewUtils.centerX(mSheetLayout) + getFabSizePx() - ViewUtils.centerX(mFab);
         float dy = ViewUtils.getRelativeTop(mSheetLayout) - ViewUtils.getRelativeTop(mFab)
@@ -190,6 +184,8 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
                 .withEndAction(restore4);
 
         mFab.setVisibility(View.GONE);
+        mAnchor.setVisibility(View.VISIBLE);
+
 
 //        Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide_in);
 //
@@ -197,27 +193,27 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
 //        mFab1.startAnimation(animation);
 
 
-//        mSheetLayout.expandFab();
+        mSheetLayout.expandFab();
     }
 
     @OnClick(R.id.anchor)
     public void onClickClose() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to hide the action buttons?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                        return;
-                    }
-                });
-        // Create the AlertDialog object and return it
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setMessage("Are you sure you want to hide the action buttons?")
+//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                    }
+//                })
+//                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        // User cancelled the dialog
+//                        return;
+//                    }
+//                });
+//        // Create the AlertDialog object and return it
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+//
         Log.i(TAG, "Making the FAB visible again");
         mFab.setVisibility(View.VISIBLE);
 
@@ -225,21 +221,26 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         anim.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mFab1.setY(200f);
+                mFab1.setVisibility(View.INVISIBLE);
+                mFab2.setVisibility(View.INVISIBLE);
+                mFab3.setVisibility(View.INVISIBLE);
+                mFab4.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
             }
         });
         mFab1.setAnimation(anim);
+        mFab2.setAnimation(anim);
+        mFab3.setAnimation(anim);
+        mFab4.setAnimation(anim);
         anim.start();
+        mAnchor.setVisibility(View.INVISIBLE);
     }
 
     private int getFabSizePx() {
@@ -250,15 +251,14 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
     @Override
     public void onFabAnimationEnd() {
 //        Intent intent = new Intent(this, AfterFabAnimationActivity.class);
-//        startActivityForResult(intent, REQUEST_CODE);
-        Toast.makeText(MainActivity.this, "OnFabAnimation ended", Toast.LENGTH_SHORT).show();
+//        startActivityForResult(intent, FAB_ANIMATION_ENDED_REQUEST_CODE);
     }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == FAB_ANIMATION_ENDED_REQUEST_CODE) {
 //            mSheetLayout.contractFab();
         }
     }

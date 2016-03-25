@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="8dp"
-            android:layout_toLeftOf="@id/fab"
+            android:layout_toLeftOf="@id/anchor"
             android:src="@drawable/ic_edit_white_24dp"
             app:borderWidth="0dp"
             app:fabSize="normal"
@@ -96,11 +96,13 @@
     <com.github.fabtransitionactivity.SheetLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:ft_container_gravity="center"
+        app:ft_container_gravity="end"
         app:ft_color="@color/primary"
         android:elevation="2dp"
-        android:onClick="contractFab"/>
+        android:onClick="contractFab" >
+
+    </com.github.fabtransitionactivity.SheetLayout>
 
 </RelativeLayout>
