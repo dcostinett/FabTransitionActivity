@@ -30,4 +30,5 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.github.ozodrukh:CircularReveal:1.1.1'
+    compile 'com.jakewharton:butterknife:7.0.1'
 }

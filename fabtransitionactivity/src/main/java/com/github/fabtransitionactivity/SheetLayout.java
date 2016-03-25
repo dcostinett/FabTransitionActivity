@@ -21,6 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import butterknife.Bind;
 import io.codetail.animation.SupportAnimator;
 
 public class SheetLayout extends FrameLayout {
@@ -228,7 +229,7 @@ public class SheetLayout extends FrameLayout {
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                mFabExpandLayout.setAlpha(1f);
+                mFabExpandLayout.setAlpha(0.7f);
             }
 
             @Override

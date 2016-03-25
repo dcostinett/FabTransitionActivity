@@ -1,15 +1,28 @@
 package com.github.fabtransitionactivity.demo;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -17,19 +30,37 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import com.github.fabtransitionactivity.SheetLayout;
 import com.github.fabtransitionactivity.demo.model.Mail;
 
 
 public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnimationEndListener {
+    public static final String TAG = "FAB";
 
-    @Bind(R.id.bottom_sheet) SheetLayout mSheetLayout;
-    @Bind(R.id.fab) FloatingActionButton mFab;
-    @Bind(R.id.list_mails) ListView listMails;
+    @Bind(R.id.bottom_sheet)
+    SheetLayout mSheetLayout;
+
+    @Bind(R.id.fab)
+    FloatingActionButton mFab;
+
+//    @Bind(R.id.list_mails)
+//    ListView listMails;
+
+    @Bind(R.id.fab1)
+    FloatingActionButton mFab1;
+    @Bind(R.id.fab2)
+    FloatingActionButton mFab2;
+    @Bind(R.id.fab3)
+    FloatingActionButton mFab3;
+    @Bind(R.id.fab4)
+    FloatingActionButton mFab4;
 
     ArrayList<Mail> mailList = new ArrayList<>();
 
     private static final int REQUEST_CODE = 1;
+    private int mAnimationDuration;
+    private float mFabSize = 24;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,35 +69,202 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         ButterKnife.bind(this);
         setUpToolbarWithTitle(getString(R.string.INBOX), false);
 
-        mSheetLayout.setFab(mFab);
-        mSheetLayout.setFabAnimationEndListener(this);
+//        mSheetLayout.setFab(mFab);
+//        mSheetLayout.setFabAnimationEndListener(this);
 
-        fillMailList();
-        listMails.setAdapter(new MailAdapter());
+//        fillMailList();
+//        listMails.setAdapter(new MailAdapter());
+
+        mFab1.setY(200f);
+        mFab2.setY(200f);
+        mFab3.setY(200f);
+        mFab4.setY(200f);
     }
 
     @OnClick(R.id.fab)
     void onFabClick() {
-        mSheetLayout.expandFab();
+        Log.i(TAG, "Running FAB click");
+        if (mFab.getVisibility() != View.VISIBLE) {
+            Log.i(TAG, "Running hide animations");
+            onClickClose();
+            return;
+        }
+        mFab.clearAnimation();
+        mFab1.clearAnimation();
+
+        float dx = ViewUtils.centerX(mSheetLayout) + getFabSizePx() - ViewUtils.centerX(mFab);
+        float dy = ViewUtils.getRelativeTop(mSheetLayout) - ViewUtils.getRelativeTop(mFab)
+                - (mFab.getHeight() - getFabSizePx()) / 2;
+
+        Animator fabSlideYAnim = ObjectAnimator.ofPropertyValuesHolder(mFab,
+                PropertyValuesHolder.ofFloat("translationY", 0f, dy));
+        fabSlideYAnim.setDuration(mAnimationDuration / 2);
+
+        AnimatorSet animSet = new AnimatorSet();
+
+        /* building animations in reverse */
+        final Runnable restore = new Runnable() {
+            @Override
+            public void run() {
+                ViewCompat.animate(mFab1)
+                        // Using straight values here to move back to original position of 0,0
+                        .translationX(0)
+                        .translationY(0)
+                        .withLayer()
+                        .setDuration(500)
+                        .setInterpolator(AnimationUtils.loadInterpolator(MainActivity.this, android.R.interpolator.anticipate_overshoot));
+            }
+        };
+
+        ViewCompat.animate(mFab1)
+                .translationYBy(-200)
+                .withLayer()
+                .setDuration(500)
+                .setInterpolator(AnimationUtils.loadInterpolator(this, android.R.interpolator.anticipate_overshoot))
+                .withEndAction(restore);
+
+        final Runnable restore2 = new Runnable() {
+            @Override
+            public void run() {
+                ViewCompat.animate(mFab2)
+                        // Using straight values here to move back to original position of 0,0
+                        .translationX(0)
+                        .translationY(0)
+                        .withLayer()
+                        .setDuration(500)
+                        .setStartDelay(100)
+                        .setInterpolator(AnimationUtils.loadInterpolator(MainActivity.this, android.R.interpolator.anticipate_overshoot));
+            }
+        };
+
+        ViewCompat.animate(mFab2)
+                .translationYBy(-200)
+                .withLayer()
+                .setDuration(600)
+                .setStartDelay(100)
+                .setInterpolator(AnimationUtils.loadInterpolator(this, android.R.interpolator.anticipate_overshoot))
+                .withEndAction(restore2);
+
+        final Runnable restore3 = new Runnable() {
+            @Override
+            public void run() {
+                ViewCompat.animate(mFab3)
+                        // Using straight values here to move back to original position of 0,0
+                        .translationX(0)
+                        .translationY(0)
+                        .withLayer()
+                        .setDuration(500)
+                        .setStartDelay(200)
+                        .setInterpolator(AnimationUtils.loadInterpolator(MainActivity.this, android.R.interpolator.anticipate_overshoot));
+            }
+        };
+
+        ViewCompat.animate(mFab3)
+                .translationYBy(-200)
+                .withLayer()
+                .setDuration(600)
+                .setStartDelay(200)
+                .setInterpolator(AnimationUtils.loadInterpolator(this, android.R.interpolator.anticipate_overshoot))
+                .withEndAction(restore3);
+
+        final Runnable restore4 = new Runnable() {
+            @Override
+            public void run() {
+                ViewCompat.animate(mFab4)
+                        // Using straight values here to move back to original position of 0,0
+                        .translationX(0)
+                        .translationY(0)
+                        .withLayer()
+                        .setDuration(500)
+                        .setStartDelay(300)
+                        .setInterpolator(AnimationUtils.loadInterpolator(MainActivity.this, android.R.interpolator.anticipate_overshoot));
+            }
+        };
+
+        ViewCompat.animate(mFab4)
+                .translationYBy(-200)
+                .withLayer()
+                .setDuration(600)
+                .setStartDelay(300)
+                .setInterpolator(AnimationUtils.loadInterpolator(this, android.R.interpolator.anticipate_overshoot))
+                .withEndAction(restore4);
+
+        mFab.setVisibility(View.GONE);
+
+//        Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide_in);
+//
+//        animation.setStartOffset(00);
+//        mFab1.startAnimation(animation);
+
+
+//        mSheetLayout.expandFab();
+    }
+
+    @OnClick(R.id.anchor)
+    public void onClickClose() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to hide the action buttons?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        return;
+                    }
+                });
+        // Create the AlertDialog object and return it
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        Log.i(TAG, "Making the FAB visible again");
+        mFab.setVisibility(View.VISIBLE);
+
+        Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_out);
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mFab1.setY(200f);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        mFab1.setAnimation(anim);
+        anim.start();
+    }
+
+    private int getFabSizePx() {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        return Math.round(mFabSize * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     @Override
     public void onFabAnimationEnd() {
-        Intent intent = new Intent(this, AfterFabAnimationActivity.class);
-        startActivityForResult(intent, REQUEST_CODE);
+//        Intent intent = new Intent(this, AfterFabAnimationActivity.class);
+//        startActivityForResult(intent, REQUEST_CODE);
+        Toast.makeText(MainActivity.this, "OnFabAnimation ended", Toast.LENGTH_SHORT).show();
     }
 
 
-   @Override
-   public void onActivityResult(int requestCode, int resultCode, Intent data) {
-       super.onActivityResult(requestCode, resultCode, data);
-       if(requestCode == REQUEST_CODE){
-           mSheetLayout.contractFab();
-       }
-   }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+//            mSheetLayout.contractFab();
+        }
+    }
 
 
-    private void fillMailList(){
+    private void fillMailList() {
         String message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
 
         mailList.add(new Mail(1, "Abbrey Christensen", message, "Nov 5"));
@@ -77,6 +275,15 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         mailList.add(new Mail(6, "Britta Holt", message, "Nov 2"));
         mailList.add(new Mail(7, "Sandra Adams", message, "Nov 2"));
         mailList.add(new Mail(8, "Cristopher Oyarzún", "Yeah!!", "Nov 2"));
+    }
+
+    public void contractFab(View view) {
+        SheetLayout layout = (SheetLayout) view;
+        layout.contractFab();
+
+        mFab.setVisibility(View.VISIBLE);
+
+        mFab1.setAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_out));
     }
 
     private class MailAdapter extends BaseAdapter {
@@ -118,25 +325,32 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
     }
 
     static class ViewHolder {
-        @Bind(R.id.image_email) ImageView imageEmail;
-        @Bind(R.id.text_label_email)  TextView textLabelEmail;
-        @Bind(R.id.text_title_email)  TextView textTitleEmail;
-        @Bind(R.id.text_message_email)  TextView textMessageEmail;
-        @Bind(R.id.text_date_email)  TextView textDateEmail;
+        @Bind(R.id.image_email)
+        ImageView imageEmail;
+        @Bind(R.id.text_label_email)
+        TextView textLabelEmail;
+        @Bind(R.id.text_title_email)
+        TextView textTitleEmail;
+        @Bind(R.id.text_message_email)
+        TextView textMessageEmail;
+        @Bind(R.id.text_date_email)
+        TextView textDateEmail;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
     }
 
-    private int setColorFilter(int color){
-        if((color % 4) == 0) {
+    private int setColorFilter(int color) {
+        if ((color % 4) == 0) {
             return ContextCompat.getColor(getApplicationContext(), R.color.one_round);
-        }if((color % 3) == 0) {
+        }
+        if ((color % 3) == 0) {
             return ContextCompat.getColor(getApplicationContext(), R.color.two_round);
-        }if((color % 2) == 0) {
+        }
+        if ((color % 2) == 0) {
             return ContextCompat.getColor(getApplicationContext(), R.color.three_round);
-        }else {
+        } else {
             return ContextCompat.getColor(getApplicationContext(), R.color.four_round);
         }
     }
