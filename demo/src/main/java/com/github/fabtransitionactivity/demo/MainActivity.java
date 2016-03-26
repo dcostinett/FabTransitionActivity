@@ -215,7 +215,12 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
 //        dialog.show();
 //
         Log.i(TAG, "Making the FAB visible again");
+        // TODO - alpha fade in/out
         mFab.setVisibility(View.VISIBLE);
+        mFab1.clearAnimation();
+        mFab2.clearAnimation();
+        mFab3.clearAnimation();
+        mFab4.clearAnimation();
 
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_out);
         anim.setAnimationListener(new Animation.AnimationListener() {
@@ -225,10 +230,6 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mFab1.setVisibility(View.INVISIBLE);
-                mFab2.setVisibility(View.INVISIBLE);
-                mFab3.setVisibility(View.INVISIBLE);
-                mFab4.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -240,6 +241,7 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         mFab3.setAnimation(anim);
         mFab4.setAnimation(anim);
         anim.start();
+        // TODO - alpha fade
         mAnchor.setVisibility(View.INVISIBLE);
     }
 
@@ -282,8 +284,6 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         layout.contractFab();
 
         mFab.setVisibility(View.VISIBLE);
-
-        mFab1.setAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_out));
     }
 
     private class MailAdapter extends BaseAdapter {
