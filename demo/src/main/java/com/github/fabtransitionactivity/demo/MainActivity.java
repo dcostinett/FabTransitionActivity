@@ -19,15 +19,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.fabtransitionactivity.SheetLayout;
+import com.github.fabtransitionactivity.demo.model.Mail;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import com.github.fabtransitionactivity.SheetLayout;
-import com.github.fabtransitionactivity.demo.model.Mail;
 
 
 public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnimationEndListener {
@@ -48,8 +47,7 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
     FloatingActionButton mFab2;
     @Bind(R.id.fab3)
     FloatingActionButton mFab3;
-    @Bind(R.id.fab4)
-    FloatingActionButton mFab4;
+
     @Bind(R.id.anchor)
     ImageView mAnchor;
 
@@ -76,7 +74,6 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         mFab1.setY(200f);
         mFab2.setY(200f);
         mFab3.setY(200f);
-        mFab4.setY(200f);
     }
 
     @OnClick(R.id.fab)
@@ -84,7 +81,6 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         mFab1.setVisibility(View.VISIBLE);
         mFab2.setVisibility(View.VISIBLE);
         mFab3.setVisibility(View.VISIBLE);
-        mFab4.setVisibility(View.VISIBLE);
 
         float dx = ViewUtils.centerX(mSheetLayout) + getFabSizePx() - ViewUtils.centerX(mFab);
         float dy = ViewUtils.getRelativeTop(mSheetLayout) - ViewUtils.getRelativeTop(mFab)
@@ -161,28 +157,6 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
                 .setInterpolator(AnimationUtils.loadInterpolator(this, android.R.interpolator.anticipate_overshoot))
                 .withEndAction(restore3);
 
-        final Runnable restore4 = new Runnable() {
-            @Override
-            public void run() {
-                ViewCompat.animate(mFab4)
-                        // Using straight values here to move back to original position of 0,0
-                        .translationX(0)
-                        .translationY(0)
-                        .withLayer()
-                        .setDuration(500)
-                        .setStartDelay(300)
-                        .setInterpolator(AnimationUtils.loadInterpolator(MainActivity.this, android.R.interpolator.anticipate_overshoot));
-            }
-        };
-
-        ViewCompat.animate(mFab4)
-                .translationYBy(-200)
-                .withLayer()
-                .setDuration(600)
-                .setStartDelay(300)
-                .setInterpolator(AnimationUtils.loadInterpolator(this, android.R.interpolator.anticipate_overshoot))
-                .withEndAction(restore4);
-
         mFab.setVisibility(View.GONE);
         mAnchor.setVisibility(View.VISIBLE);
 
@@ -220,27 +194,28 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         mFab1.clearAnimation();
         mFab2.clearAnimation();
         mFab3.clearAnimation();
-        mFab4.clearAnimation();
 
-        Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_out);
-        anim.setAnimationListener(new Animation.AnimationListener() {
+        Animation slideOut = AnimationUtils.loadAnimation(this, R.anim.slide_out);
+        slideOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                mFab1.setVisibility(View.GONE);
+                mFab2.setVisibility(View.GONE);
+                mFab3.setVisibility(View.GONE);
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
         });
-        mFab1.setAnimation(anim);
-        mFab2.setAnimation(anim);
-        mFab3.setAnimation(anim);
-        mFab4.setAnimation(anim);
-        anim.start();
+        mFab1.setAnimation(slideOut);
+        mFab2.setAnimation(slideOut);
+        mFab3.setAnimation(slideOut);
+        slideOut.start();
         // TODO - alpha fade
         mAnchor.setVisibility(View.INVISIBLE);
     }
@@ -256,7 +231,6 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
 //        startActivityForResult(intent, FAB_ANIMATION_ENDED_REQUEST_CODE);
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -264,7 +238,6 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
 //            mSheetLayout.contractFab();
         }
     }
-
 
     private void fillMailList() {
         String message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
