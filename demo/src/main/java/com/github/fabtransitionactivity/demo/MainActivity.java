@@ -117,7 +117,7 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
                 ViewCompat.animate(mFab1)
                         // Using straight values here to move back to original position of 0,0
                         .translationX(0)
-                        .translationY(0)
+                        .translationY(-50)
                         .withLayer()
                         .setDuration(500)
                         .setInterpolator(AnimationUtils.loadInterpolator(MainActivity.this, android.R.interpolator.anticipate_overshoot));
@@ -125,7 +125,7 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         };
 
         ViewCompat.animate(mFab1)
-                .translationYBy(-200)
+                .translationYBy(-250)
                 .withLayer()
                 .setDuration(500)
                 .setInterpolator(AnimationUtils.loadInterpolator(this, android.R.interpolator.anticipate_overshoot))
@@ -137,7 +137,7 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
                 ViewCompat.animate(mFab2)
                         // Using straight values here to move back to original position of 0,0
                         .translationX(0)
-                        .translationY(0)
+                        .translationY(-50)
                         .withLayer()
                         .setDuration(500)
                         .setStartDelay(100)
@@ -146,7 +146,7 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         };
 
         ViewCompat.animate(mFab2)
-                .translationYBy(-200)
+                .translationYBy(-250)
                 .withLayer()
                 .setDuration(600)
                 .setStartDelay(100)
@@ -159,7 +159,7 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
                 ViewCompat.animate(mFab3)
                         // Using straight values here to move back to original position of 0,0
                         .translationX(0)
-                        .translationY(0)
+                        .translationY(-50)
                         .withLayer()
                         .setDuration(500)
                         .setStartDelay(200)
@@ -168,7 +168,7 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         };
 
         ViewCompat.animate(mFab3)
-                .translationYBy(-200)
+                .translationYBy(-250)
                 .withLayer()
                 .setDuration(600)
                 .setStartDelay(200)
@@ -220,9 +220,6 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
                 mFab1.setY(offScreenYLocation);
                 mFab2.setY(offScreenYLocation);
                 mFab3.setY(offScreenYLocation);
-                mFab1.setVisibility(View.GONE);
-                mFab2.setVisibility(View.GONE);
-                mFab3.setVisibility(View.GONE);
             }
 
             @Override
@@ -232,17 +229,17 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         mFab1.setAnimation(slideOut);
         mFab2.setAnimation(slideOut);
         mFab3.setAnimation(slideOut);
-        slideOut.setDuration(5000);
+        slideOut.setDuration(1000);
         slideOut.start();
 
-        mFab1.clearAnimation();
-        mFab1.setVisibility(View.INVISIBLE);
-
-        mFab2.clearAnimation();
-        mFab2.setVisibility(View.INVISIBLE);
-
-        mFab3.clearAnimation();
-        mFab3.setVisibility(View.INVISIBLE);
+//        mFab1.clearAnimation();
+//        mFab1.setVisibility(View.INVISIBLE);
+//
+//        mFab2.clearAnimation();
+//        mFab2.setVisibility(View.INVISIBLE);
+//
+//        mFab3.clearAnimation();
+//        mFab3.setVisibility(View.INVISIBLE);
 
         mAnchor.setAnimation(fadeOut);
         mAnchor.setVisibility(View.INVISIBLE);
