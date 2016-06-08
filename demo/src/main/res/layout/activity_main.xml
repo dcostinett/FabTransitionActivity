@@ -16,8 +16,8 @@
         app:titleTextAppearance="@style/ToolbarTitle" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/toolbar_actionbar"
         android:layout_alignParentBottom="true">
 
@@ -32,10 +32,48 @@
             android:visibility="invisible"
             android:src="@android:drawable/ic_input_add" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp">
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab1"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="start"
+                android:src="@drawable/ic_edit_white_24dp"
+                app:borderWidth="0dp"
+                app:fabSize="normal"
+                app:rippleColor="#000" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_edit_white_24dp"
+                app:borderWidth="0dp"
+                app:fabSize="normal"
+                android:layout_gravity="center_horizontal"
+                app:rippleColor="#000" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab3"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_edit_white_24dp"
+                app:borderWidth="0dp"
+                app:fabSize="normal"
+                android:layout_gravity="end" android:foregroundGravity="right"
+                app:rippleColor="#000" />
+        </LinearLayout>
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="-18dp"
@@ -46,44 +84,6 @@
             app:rippleColor="#000"
             android:visibility="visible"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="8dp"
-            android:layout_toLeftOf="@id/anchor"
-            android:layout_marginRight="18dp"
-            android:src="@drawable/ic_edit_white_24dp"
-            app:borderWidth="0dp"
-            app:fabSize="normal"
-            app:rippleColor="#000" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="8dp"
-            android:layout_toLeftOf="@id/fab1"
-            android:layout_marginRight="@dimen/fab_right_margin"
-            android:src="@drawable/ic_edit_white_24dp"
-            app:borderWidth="0dp"
-            app:fabSize="normal"
-            app:rippleColor="#000" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="8dp"
-            android:layout_toLeftOf="@id/fab2"
-            android:layout_marginRight="@dimen/fab_right_margin"
-            android:src="@drawable/ic_edit_white_24dp"
-            app:borderWidth="0dp"
-            app:fabSize="normal"
-            app:rippleColor="#000" />
     </RelativeLayout>
 
     <com.github.fabtransitionactivity.SheetLayout

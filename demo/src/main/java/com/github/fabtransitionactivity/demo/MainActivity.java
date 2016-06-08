@@ -75,9 +75,12 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         fadeOut.setInterpolator(new AccelerateInterpolator());
         fadeOut.setDuration(500);
 
-        mFab1.setY(200f);
-        mFab2.setY(200f);
-        mFab3.setY(200f);
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        mFab1.setY(metrics.heightPixels + 200);
+        mFab2.setY(metrics.heightPixels + 200);
+        mFab3.setY(metrics.heightPixels + 200);
     }
 
     @OnClick(R.id.fab)
@@ -196,10 +199,6 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
 //
         Log.i(TAG, "Making the FAB visible again");
         // TODO - alpha fade in/out
-        mFab.setVisibility(View.VISIBLE);
-        mFab1.clearAnimation();
-        mFab2.clearAnimation();
-        mFab3.clearAnimation();
 
         Animation slideOut = AnimationUtils.loadAnimation(this, R.anim.slide_out);
         slideOut.setAnimationListener(new Animation.AnimationListener() {
@@ -209,6 +208,9 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                mFab1.setY(offScreenYLocation);
+                mFab2.setY(offScreenYLocation);
+                mFab3.setY(offScreenYLocation);
                 mFab1.setVisibility(View.GONE);
                 mFab2.setVisibility(View.GONE);
                 mFab3.setVisibility(View.GONE);
@@ -221,7 +223,7 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         mFab1.setAnimation(slideOut);
         mFab2.setAnimation(slideOut);
         mFab3.setAnimation(slideOut);
-        slideOut.setDuration(500);
+        slideOut.setDuration(5000);
         slideOut.start();
 
         mFab1.clearAnimation();
@@ -233,12 +235,12 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         mFab3.clearAnimation();
         mFab3.setVisibility(View.INVISIBLE);
 
-        mFab1.setY(offScreenYLocation);
-        mFab2.setY(offScreenYLocation);
-        mFab3.setY(offScreenYLocation);
-
         mAnchor.setAnimation(fadeOut);
         mAnchor.setVisibility(View.INVISIBLE);
+
+        Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        mFab.setAnimation(fadeIn);
+        mFab.setVisibility(View.VISIBLE);
     }
 
     private int getFabSizePx() {

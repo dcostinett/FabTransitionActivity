@@ -6,4 +6,5 @@
     <dimen name="menu_height">48dp</dimen>
     <dimen name="menu_text_size">16sp</dimen>
     <dimen name="fab_right_margin">48dp</dimen>
+    <dimen name="rightmost_margin">18dp</dimen>
 </resources>
