@@ -1,95 +1,79 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_below="@id/toolbar_actionbar"
+    android:layout_alignParentBottom="true">
 
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/toolbar_actionbar"
-        style="@style/ToolBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary"
-        android:elevation="2dp"
-        android:minHeight="56dp"
-        android:paddingLeft="36dp"
-        app:titleTextAppearance="@style/ToolbarTitle" />
+    <ImageView
+        android:id="@+id/anchor"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="12dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="12dp"
+        android:src="@drawable/ic_follow_delete" />
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/fab_holder"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar_actionbar"
-        android:layout_alignParentBottom="true">
-
-        <ImageView
-            android:id="@+id/anchor"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="12dp"
-            android:visibility="invisible"
-            android:background="@color/defaultAppColor"
-            android:src="@android:drawable/ic_input_add" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
-            android:gravity="center"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp">
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab1"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="start"
-                android:src="@drawable/ic_timeline_light"
-                android:backgroundTint="@color/defaultAppColor"
-                app:borderWidth="0dp"
-                app:fabSize="normal"
-                app:rippleColor="#000" />
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab2"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_share_light"
-                android:backgroundTint="@color/defaultAppColor"
-                app:borderWidth="0dp"
-                app:fabSize="normal"
-                android:layout_gravity="center_horizontal"
-                app:rippleColor="#000" />
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab3"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_follow_light"
-                android:backgroundTint="@color/defaultAppColor"
-                app:borderWidth="0dp"
-                app:fabSize="normal"
-                android:layout_gravity="end" android:foregroundGravity="right"
-                app:rippleColor="#000" />
-        </LinearLayout>
-
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp">
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/fab1"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="-18dp"
-            android:layout_marginRight="-18dp"
+            android:layout_gravity="start"
+            android:src="@drawable/ic_timeline_light"
             android:backgroundTint="@color/defaultAppColor"
-            android:src="@drawable/ic_edit_white_24dp"
             app:borderWidth="0dp"
             app:fabSize="normal"
-            app:rippleColor="#000"
-            android:visibility="visible"/>
+            app:rippleColor="#000" />
 
-    </RelativeLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab2"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_share_light"
+            android:backgroundTint="@color/defaultAppColor"
+            app:borderWidth="0dp"
+            app:fabSize="normal"
+            android:layout_gravity="center_horizontal"
+            app:rippleColor="#000" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab3"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_follow_light"
+            android:backgroundTint="@color/defaultAppColor"
+            app:borderWidth="0dp"
+            app:fabSize="normal"
+            android:layout_gravity="end" android:foregroundGravity="right"
+            app:rippleColor="#000" />
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="-18dp"
+        android:layout_marginRight="-18dp"
+        android:backgroundTint="@color/defaultAppColor"
+        android:src="@drawable/ic_edit_white_24dp"
+        app:borderWidth="0dp"
+        app:fabSize="normal"
+        app:rippleColor="#000"
+        android:visibility="visible"/>
 
     <com.github.fabtransitionactivity.SheetLayout
         android:id="@+id/bottom_sheet"
@@ -102,5 +86,4 @@
         android:onClick="contractFab" >
 
     </com.github.fabtransitionactivity.SheetLayout>
-
 </RelativeLayout>

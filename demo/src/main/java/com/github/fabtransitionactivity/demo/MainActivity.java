@@ -67,7 +67,6 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        setUpToolbarWithTitle(getString(R.string.INBOX), false);
 
         mSheetLayout.setFab(mFab);
         mSheetLayout.setFabAnimationEndListener(this);
