@@ -68,9 +68,6 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         mSheetLayout.setFab(mFab);
         mSheetLayout.setFabAnimationEndListener(this);
 
-//        fillMailList();
-//        listMails.setAdapter(new MailAdapter());
-
         mFab1.setY(200f);
         mFab2.setY(200f);
         mFab3.setY(200f);
