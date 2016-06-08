@@ -87,9 +87,9 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        mFab1.setY(metrics.heightPixels + 200);
-        mFab2.setY(metrics.heightPixels + 200);
-        mFab3.setY(metrics.heightPixels + 200);
+        mFab1.setY(200f);
+        mFab2.setY(200f);
+        mFab3.setY(200f);
     }
 
     @OnClick(R.id.fab)
