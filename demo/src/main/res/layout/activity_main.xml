@@ -34,6 +34,7 @@
             android:layout_gravity="start"
             android:src="@drawable/ic_timeline_light"
             android:backgroundTint="@color/defaultAppColor"
+            android:layout_marginRight="48dp"
             app:borderWidth="0dp"
             app:fabSize="normal"
             app:rippleColor="#000" />
@@ -44,6 +45,7 @@
             android:layout_height="48dp"
             android:src="@drawable/ic_share_light"
             android:backgroundTint="@color/defaultAppColor"
+            android:layout_marginRight="48dp"
             app:borderWidth="0dp"
             app:fabSize="normal"
             android:layout_gravity="center_horizontal"

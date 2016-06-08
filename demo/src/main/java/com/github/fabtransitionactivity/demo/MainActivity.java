@@ -5,6 +5,8 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -73,6 +75,14 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
 
         fadeOut.setInterpolator(new AccelerateInterpolator());
         fadeOut.setDuration(500);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            // BackgroundTint was introduced in API 21, so for earlier Android devices need to set state color list
+            mFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.fab_tint_color_state_list)));
+            mFab1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.fab_tint_color_state_list)));
+            mFab2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.fab_tint_color_state_list)));
+            mFab3.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.fab_tint_color_state_list)));
+        }
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
