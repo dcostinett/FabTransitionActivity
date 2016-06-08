@@ -13,6 +13,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
@@ -53,7 +55,9 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
 
     ArrayList<Mail> mailList = new ArrayList<>();
 
+    private final Animation fadeOut = new AlphaAnimation(1, 0);
 
+    private float offScreenYLocation;
     private static final int FAB_ANIMATION_ENDED_REQUEST_CODE = 1;
     private int mAnimationDuration;
     private float mFabSize = 24;
@@ -68,6 +72,9 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         mSheetLayout.setFab(mFab);
         mSheetLayout.setFabAnimationEndListener(this);
 
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setDuration(500);
+
         mFab1.setY(200f);
         mFab2.setY(200f);
         mFab3.setY(200f);
@@ -75,6 +82,8 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
 
     @OnClick(R.id.fab)
     void onFabClick() {
+        offScreenYLocation = mFab1.getY();
+
         mFab1.setVisibility(View.VISIBLE);
         mFab2.setVisibility(View.VISIBLE);
         mFab3.setVisibility(View.VISIBLE);
@@ -83,7 +92,7 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         float dy = ViewUtils.getRelativeTop(mSheetLayout) - ViewUtils.getRelativeTop(mFab)
                 - (mFab.getHeight() - getFabSizePx()) / 2;
 
-        Animator fabSlideYAnim = ObjectAnimator.ofPropertyValuesHolder(mFab,
+        final Animator fabSlideYAnim = ObjectAnimator.ofPropertyValuesHolder(mFab,
                 PropertyValuesHolder.ofFloat("translationY", 0f, dy));
         fabSlideYAnim.setDuration(mAnimationDuration / 2);
 
@@ -212,8 +221,23 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         mFab1.setAnimation(slideOut);
         mFab2.setAnimation(slideOut);
         mFab3.setAnimation(slideOut);
+        slideOut.setDuration(500);
         slideOut.start();
-        // TODO - alpha fade
+
+        mFab1.clearAnimation();
+        mFab1.setVisibility(View.INVISIBLE);
+
+        mFab2.clearAnimation();
+        mFab2.setVisibility(View.INVISIBLE);
+
+        mFab3.clearAnimation();
+        mFab3.setVisibility(View.INVISIBLE);
+
+        mFab1.setY(offScreenYLocation);
+        mFab2.setY(offScreenYLocation);
+        mFab3.setY(offScreenYLocation);
+
+        mAnchor.setAnimation(fadeOut);
         mAnchor.setVisibility(View.INVISIBLE);
     }
 
@@ -224,6 +248,7 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
 
     @Override
     public void onFabAnimationEnd() {
+        Log.i(TAG, "onFabAnimationEnd");
 //        Intent intent = new Intent(this, AfterFabAnimationActivity.class);
 //        startActivityForResult(intent, FAB_ANIMATION_ENDED_REQUEST_CODE);
     }
