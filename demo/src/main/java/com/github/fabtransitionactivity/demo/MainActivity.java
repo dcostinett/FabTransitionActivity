@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
@@ -63,6 +64,8 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
     private static final int FAB_ANIMATION_ENDED_REQUEST_CODE = 1;
     private int mAnimationDuration;
     private float mFabSize = 24;
+    private boolean mCanAnimate = true;
+    private final Handler animationDelayHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +97,21 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
 
     @OnClick(R.id.fab)
     void onFabClick() {
+        if (mCanAnimate) {
+            mCanAnimate = false;
+
+            doFabAnimation();
+            //Only allow the user to actually refresh the data every 5 seconds
+            animationDelayHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mCanAnimate = true;
+                }
+            }, AppConstants.ANIMATION_REFRESH_DELAY);
+        }
+    }
+
+    private void doFabAnimation() {
         offScreenYLocation = mFab1.getY();
 
         mFab1.setVisibility(View.VISIBLE);
@@ -178,37 +196,26 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         mFab.setVisibility(View.GONE);
         mAnchor.setVisibility(View.VISIBLE);
 
-
-//        Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide_in);
-//
-//        animation.setStartOffset(00);
-//        mFab1.startAnimation(animation);
-
-
         mSheetLayout.expandFab();
     }
 
     @OnClick(R.id.anchor)
     public void onClickClose() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setMessage("Are you sure you want to hide the action buttons?")
-//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                    }
-//                })
-//                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        // User cancelled the dialog
-//                        return;
-//                    }
-//                });
-//        // Create the AlertDialog object and return it
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//
-        Log.i(TAG, "Making the FAB visible again");
-        // TODO - alpha fade in/out
+        if (mCanAnimate) {
+            mCanAnimate = false;
 
+            doFabHideAnimation();
+            //Only allow the user to actually refresh the data every 5 seconds
+            animationDelayHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mCanAnimate = true;
+                }
+            }, AppConstants.ANIMATION_REFRESH_DELAY);
+        }
+    }
+
+    private void doFabHideAnimation() {
         Animation slideOut = AnimationUtils.loadAnimation(this, R.anim.slide_out);
         slideOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -231,15 +238,6 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         mFab3.setAnimation(slideOut);
         slideOut.setDuration(1000);
         slideOut.start();
-
-//        mFab1.clearAnimation();
-//        mFab1.setVisibility(View.INVISIBLE);
-//
-//        mFab2.clearAnimation();
-//        mFab2.setVisibility(View.INVISIBLE);
-//
-//        mFab3.clearAnimation();
-//        mFab3.setVisibility(View.INVISIBLE);
 
         mAnchor.setAnimation(fadeOut);
         mAnchor.setVisibility(View.INVISIBLE);
